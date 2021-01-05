@@ -21,3 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+### 自分で追加 ###
+.eslintcache
+.firebaserc
+package-lock.json
+yarn.lock
+
+# firebaseの設定を載せるため除外
+.env
