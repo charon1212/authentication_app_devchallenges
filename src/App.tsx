@@ -1,7 +1,8 @@
 import React from 'react';
+import SignIn from './components/SignIn';
 
-const App = () => {
-  return <h1>App.tsx</h1>;
+const App: React.FC = () => {
+  return <SignIn />;
 };
 
 export default App;
