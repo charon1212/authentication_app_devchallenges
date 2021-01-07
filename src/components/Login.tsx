@@ -1,0 +1,159 @@
+import React from 'react';
+import {
+  Container,
+  makeStyles,
+  Paper,
+  Typography,
+  InputAdornment,
+  FormControl,
+  OutlinedInput,
+  Button,
+  Grid,
+  Link,
+} from '@material-ui/core';
+import EmailIcon from '@material-ui/icons/Email';
+import LockIcon from '@material-ui/icons/Lock';
+import devchallenges from '../resource/devchallenges.svg';
+import imageFacebook from '../resource/Facebook.svg';
+import imageGithub from '../resource/Github.svg';
+import imageGoogle from '../resource/Google.svg';
+import imageTwitter from '../resource/Twitter.svg';
+import ImageButton from './ImageButton';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    [theme.breakpoints.up('sm')]: {
+      marginTop: theme.spacing(8),
+      padding: theme.spacing(6, 8, 6),
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing(2),
+      border: 'none',
+    },
+  },
+  boldLabel: {
+    marginTop: theme.spacing(2),
+    fontWeight: 'bold',
+  },
+  labelCenter: {
+    textAlign: 'center',
+    color: 'gray',
+  },
+  text: {
+    marginTop: theme.spacing(1),
+  },
+  loginButton: {
+    margin: theme.spacing(2, 0, 3),
+    textTransform: 'none',
+  },
+  gridContainer: {
+    textAlign: 'center',
+    margin: theme.spacing(3, 0, 3),
+  },
+}));
+
+const Login: React.FC = () => {
+  const classes = useStyles();
+  return (
+    <>
+      <Container maxWidth='sm'>
+        <Paper className={classes.paper} variant='outlined'>
+          <img src={devchallenges} alt='devchallenges' />
+          <Typography className={classes.boldLabel}>
+            Login
+          </Typography>
+          <FormControl fullWidth>
+            <OutlinedInput
+              className={classes.text}
+              placeholder='Email'
+              startAdornment={
+                <InputAdornment position='start'>
+                  <EmailIcon color='action' />
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <OutlinedInput
+              className={classes.text}
+              placeholder='Password'
+              startAdornment={
+                <InputAdornment position='start'>
+                  <LockIcon color='action' />
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <Button
+              className={classes.loginButton}
+              variant='contained'
+              color='primary'
+            >
+              Login
+            </Button>
+          </FormControl>
+          <Typography className={classes.labelCenter}>
+            or continue with these social profile
+          </Typography>
+          <Grid
+            className={classes.gridContainer}
+            container
+            spacing={2}
+            justify='center'
+          >
+            <Grid item>
+              <ImageButton
+                src={imageFacebook}
+                alt='Facebook'
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <ImageButton
+                src={imageGithub}
+                alt='Github'
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <ImageButton
+                src={imageGoogle}
+                alt='Google'
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <ImageButton
+                src={imageTwitter}
+                alt='Twitter'
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Typography className={classes.labelCenter}>
+            Don't have an account yet?{' '}
+            <Link
+              href='#'
+              onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+                e.preventDefault();
+              }}
+            >
+              Register
+            </Link>
+          </Typography>
+        </Paper>
+      </Container>
+    </>
+  );
+};
+
+export default Login;
