@@ -16,6 +16,9 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HeaderMenuItems from './HeaderMenuItems';
 
 const useStyles = makeStyles((theme) => ({
+  appbar: {
+    backgroundColor: 'white',
+  },
   toolbar: {
     [theme.breakpoints.up('sm')]: {
       paddingLeft: theme.spacing(10),
@@ -65,7 +68,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <AppBar color='transparent'>
+      <AppBar color='inherit'>
         <Toolbar className={classes.toolbar}>
           <img src={devchallenges} alt='devchallenges' />
           <Link className={classes.link} href='#' onClick={linkClickHandler}>
