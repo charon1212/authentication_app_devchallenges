@@ -1,8 +1,13 @@
 import React from 'react';
-import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
+import Login from './components/Login';
+import UserInfo from './components/UserInfo';
+import UserInfoEdit from './components/UserInfoEdit';
 
 const App: React.FC = () => {
-  return <SignIn />;
+  // return <UserInfo />;
+  // return <Login />;
+  return <UserInfoEdit />;
 };
 
 export default App;
