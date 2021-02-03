@@ -36,7 +36,7 @@ const Auth: React.FC<Prop> = (props) => {
       setHasChecked(true);
     });
     return () => unSub();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
