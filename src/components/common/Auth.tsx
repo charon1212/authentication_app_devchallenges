@@ -38,6 +38,14 @@ const Auth: React.FC<Prop> = (props) => {
     return () => unSub();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (user.uid) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [user]);
+
   return (
     <>
       {hasChecked ? (
