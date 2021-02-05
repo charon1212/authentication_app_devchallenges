@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   makeStyles,
@@ -19,8 +19,13 @@ import imageGithub from '../resource/Github.svg';
 import imageGoogle from '../resource/Google.svg';
 import imageTwitter from '../resource/Twitter.svg';
 import ImageButton from './ImageButton';
+import { useHistory } from 'react-router-dom';
+import { auth } from '../app/firebase/firebase';
+import { useDispatch } from 'react-redux';
+import { login } from '../features/user/userSlice';
 
 const useStyles = makeStyles((theme) => ({
+  /** レスポンシブ対応。 */
   paper: {
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing(8),
@@ -54,18 +59,63 @@ const useStyles = makeStyles((theme) => ({
 
 const Login: React.FC = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const [mail, setMail] = useState('');
+  const [password, setPassword] = useState('');
+
+  /** registerボタンクリック時の処理。サインアップ画面へ遷移する。 */
+  const switchSignUp = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    history.push('/signup');
+  };
+
+  /** ログインボタンクリック時の処理。 */
+  const loginButtonOnClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    auth
+      .signInWithEmailAndPassword(mail, password)
+      .then((credential) => {
+        const user = credential.user;
+        if (user) {
+          dispatch(
+            login({
+              uid: user.uid,
+              displayName: user.displayName ?? '',
+              photoUrl: user.photoURL ?? '',
+            })
+          );
+          history.push('/');
+        } else {
+          alert('ログインに失敗しました。');
+        }
+      })
+      .catch((error) => {
+        const { code, message } = error;
+        console.log(code); // 製品としては不要だが、学習用のサンプルとしてエラーコードが取れることを残す。使わないとターミナルに警告が出る。
+        alert(message);
+      });
+  };
+
   return (
     <>
       <Container maxWidth='sm'>
         <Paper className={classes.paper} variant='outlined'>
           <img src={devchallenges} alt='devchallenges' />
-          <Typography className={classes.boldLabel}>
-            Login
-          </Typography>
+          <Typography className={classes.boldLabel}>Login</Typography>
+          {/** ■■■メールアドレス■■■ */}
           <FormControl fullWidth>
             <OutlinedInput
               className={classes.text}
               placeholder='Email'
+              value={mail}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                e.preventDefault();
+                setMail(e.target.value);
+              }}
               startAdornment={
                 <InputAdornment position='start'>
                   <EmailIcon color='action' />
@@ -73,10 +123,16 @@ const Login: React.FC = () => {
               }
             />
           </FormControl>
+          {/** ■■■パスワード■■■ */}
           <FormControl fullWidth>
             <OutlinedInput
               className={classes.text}
               placeholder='Password'
+              value={password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                e.preventDefault();
+                setPassword(e.target.value);
+              }}
               startAdornment={
                 <InputAdornment position='start'>
                   <LockIcon color='action' />
@@ -84,11 +140,13 @@ const Login: React.FC = () => {
               }
             />
           </FormControl>
+          {/** ■■■ログインボタン■■■ */}
           <FormControl fullWidth>
             <Button
               className={classes.loginButton}
               variant='contained'
               color='primary'
+              onClick={loginButtonOnClick}
             >
               Login
             </Button>
@@ -96,6 +154,7 @@ const Login: React.FC = () => {
           <Typography className={classes.labelCenter}>
             or continue with these social profile
           </Typography>
+          {/** ■■■SNS認証■■■ */}
           <Grid
             className={classes.gridContainer}
             container
@@ -140,13 +199,8 @@ const Login: React.FC = () => {
             </Grid>
           </Grid>
           <Typography className={classes.labelCenter}>
-            Don't have an account yet?{' '}
-            <Link
-              href='#'
-              onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                e.preventDefault();
-              }}
-            >
+            Don't have an account yet{' '}
+            <Link href='#' onClick={switchSignUp}>
               Register
             </Link>
           </Typography>

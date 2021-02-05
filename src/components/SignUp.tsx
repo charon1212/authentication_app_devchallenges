@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   makeStyles,
@@ -19,8 +19,13 @@ import imageGithub from '../resource/Github.svg';
 import imageGoogle from '../resource/Google.svg';
 import imageTwitter from '../resource/Twitter.svg';
 import ImageButton from './ImageButton';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { auth } from '../app/firebase/firebase';
+import { login } from '../features/user/userSlice';
 
 const useStyles = makeStyles((theme) => ({
+  /** レスポンシブ対応。 */
   paper: {
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing(8),
@@ -57,6 +62,49 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp: React.FC = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const [mail, setMail] = useState('');
+  const [password, setPassword] = useState('');
+
+  /** registerボタンクリック時の処理。サインアップ画面へ遷移する。 */
+  const switchLogin = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    history.push('/login');
+  };
+
+  /** サインアップボタンクリック時の処理。 */
+  const signUp = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    auth
+      .createUserWithEmailAndPassword(mail, password)
+      .then((credential) => {
+        const user = credential.user;
+        if (user) {
+          dispatch(
+            login({
+              uid: user.uid,
+              displayName: user.displayName ?? '',
+              photoUrl: user.photoURL ?? '',
+            })
+          );
+          alert(
+            'ようこそ！サインアップに成功しました。\nホーム画面に移動します。'
+          );
+          history.push('/');
+        } else {
+          alert('サインアップに失敗しました。');
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        alert(errorMessage);
+      });
+  };
+
   return (
     <>
       <Container maxWidth='sm'>
@@ -74,10 +122,16 @@ const SignUp: React.FC = () => {
             <br />
             choose
           </Typography>
+          {/** ■■■メールアドレス■■■ */}
           <FormControl fullWidth>
             <OutlinedInput
               className={classes.text}
               placeholder='Email'
+              value={mail}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                e.preventDefault();
+                setMail(e.target.value);
+              }}
               startAdornment={
                 <InputAdornment position='start'>
                   <EmailIcon color='action' />
@@ -85,10 +139,16 @@ const SignUp: React.FC = () => {
               }
             />
           </FormControl>
+          {/** ■■■パスワード■■■ */}
           <FormControl fullWidth>
             <OutlinedInput
               className={classes.text}
               placeholder='Password'
+              value={password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                e.preventDefault();
+                setPassword(e.target.value);
+              }}
               startAdornment={
                 <InputAdornment position='start'>
                   <LockIcon color='action' />
@@ -96,11 +156,13 @@ const SignUp: React.FC = () => {
               }
             />
           </FormControl>
+          {/** ■■■サインアップボタン■■■ */}
           <FormControl fullWidth>
             <Button
               className={classes.loginButton}
               variant='contained'
               color='primary'
+              onClick={signUp}
             >
               Start coding now
             </Button>
@@ -108,6 +170,7 @@ const SignUp: React.FC = () => {
           <Typography className={classes.labelCenter}>
             or continue with these social profile
           </Typography>
+          {/** ■■■SNS認証■■■ */}
           <Grid
             className={classes.gridContainer}
             container
@@ -153,12 +216,7 @@ const SignUp: React.FC = () => {
           </Grid>
           <Typography className={classes.labelCenter}>
             Already a member?{' '}
-            <Link
-              href='#'
-              onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                e.preventDefault();
-              }}
-            >
+            <Link href='#' onClick={switchLogin}>
               Login
             </Link>
           </Typography>
