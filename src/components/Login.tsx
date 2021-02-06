@@ -73,12 +73,21 @@ const Login: React.FC = () => {
     e.preventDefault();
     history.push(pathSignUp);
   };
+  /** Password入力欄のKeyDownイベントハンドラ */
+  const passwordTextOnKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      loginButtonOnClick(undefined);
+    }
+  };
 
   /** ログインボタンクリック時の処理。 */
   const loginButtonOnClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
   ) => {
-    e.preventDefault();
+    e?.preventDefault();
     auth
       .signInWithEmailAndPassword(mail, password)
       .then((credential) => {
@@ -138,6 +147,7 @@ const Login: React.FC = () => {
                 e.preventDefault();
                 setPassword(e.target.value);
               }}
+              onKeyDown={passwordTextOnKeyDown}
               startAdornment={
                 <InputAdornment position='start'>
                   <LockIcon color='action' />
