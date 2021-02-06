@@ -12,11 +12,11 @@ const AppRouter: React.FC = () => {
     <>
       <Router>
         <Switch>
-          <Route exact path='/login' component={Login} />
-          <Route exact path='/signup' component={SignUp} />
+          <Route exact path={pathLogin} component={Login} />
+          <Route exact path={pathSignUp} component={SignUp} />
           <Auth loginUri='' loadingComponent={LoginLoading}>
             <Switch>
-              <Route exact path='/edit' component={UserInfoEdit} />
+              <Route exact path={pathUserInfoEdit} component={UserInfoEdit} />
               <Route component={UserInfo} />
             </Switch>
           </Auth>
@@ -26,4 +26,7 @@ const AppRouter: React.FC = () => {
   );
 };
 
+export const pathLogin = '/login';
+export const pathSignUp = '/signup';
+export const pathUserInfoEdit = '/edit';
 export default AppRouter;

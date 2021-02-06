@@ -25,6 +25,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../features/user/userSlice';
 import Signature from './Signature';
 import { noname, noImageUrl } from '../app/constant';
+import { pathSignUp } from './common/AppRouter';
 
 const useStyles = makeStyles((theme) => ({
   /** レスポンシブ対応。 */
@@ -70,7 +71,7 @@ const Login: React.FC = () => {
   /** registerボタンクリック時の処理。サインアップ画面へ遷移する。 */
   const switchSignUp = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
-    history.push('/signup');
+    history.push(pathSignUp);
   };
 
   /** ログインボタンクリック時の処理。 */

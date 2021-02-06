@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, login, logout } from '../..//features/user/userSlice';
 import { Redirect } from 'react-router-dom';
 import { auth } from '../../app/firebase/firebase';
+import { pathLogin } from './AppRouter';
 
 type Prop = {
   loginUri: string;
@@ -54,7 +55,7 @@ const Auth: React.FC<Prop> = (props) => {
             <>{props.children}</>
           ) : (
             <>
-              <Redirect to='/login' />
+              <Redirect to={pathLogin} />
             </>
           )}
         </>

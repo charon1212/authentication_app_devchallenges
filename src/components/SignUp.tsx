@@ -25,6 +25,7 @@ import { auth } from '../app/firebase/firebase';
 import { login } from '../features/user/userSlice';
 import Signature from './Signature';
 import { noname, noImageUrl } from '../app/constant';
+import { pathLogin } from './common/AppRouter';
 
 const useStyles = makeStyles((theme) => ({
   /** レスポンシブ対応。 */
@@ -73,7 +74,7 @@ const SignUp: React.FC = () => {
   /** registerボタンクリック時の処理。サインアップ画面へ遷移する。 */
   const switchLogin = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
-    history.push('/login');
+    history.push(pathLogin);
   };
 
   /** サインアップボタンクリック時の処理。 */
