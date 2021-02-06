@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import {
   TableContainer,
@@ -12,9 +12,15 @@ import {
   TableCell,
   Container,
   Button,
+  Avatar,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import Signature from './Signature';
+import { selectUser } from '../features/user/userSlice';
+import { pathUserInfoEdit } from './common/AppRouter';
+import { useHistory } from 'react-router-dom';
+import { db } from '../app/firebase/firebase';
 
 const useStyles = makeStyles((theme) => ({
   mainTitle: {
@@ -33,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
     marginRight: theme.spacing(2),
   },
+  avatar: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
   tableCellPadding: {
     padding: theme.spacing(2, 2, 2, 4),
   },
@@ -43,6 +53,35 @@ const useStyles = makeStyles((theme) => ({
 
 const UserInfo: React.FC = () => {
   const classes = useStyles();
+  const user = useSelector(selectUser);
+  const history = useHistory();
+  const [bio, setBio] = useState('');
+
+  const editButtonOnClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    history.push(pathUserInfoEdit);
+  };
+
+  useEffect(() => {
+    const userDoc = db.collection('users').doc(user.uid);
+    const unSub = userDoc.onSnapshot(
+      (snapshot) => {
+        if (snapshot.exists) {
+          setBio(snapshot.get('bio'));
+        } else {
+          setBio('');
+        }
+      },
+      (error) => {
+        alert('ユーザー情報の取得に失敗しました。');
+      }
+    );
+    return () => {
+      unSub();
+    };
+  }, [user]);
 
   return (
     <>
@@ -70,7 +109,11 @@ const UserInfo: React.FC = () => {
                         Some info may be visible to other people
                       </Typography>
                     </div>
-                    <Button className={classes.editButton} variant='outlined'>
+                    <Button
+                      className={classes.editButton}
+                      variant='outlined'
+                      onClick={editButtonOnClick}
+                    >
                       Edit
                     </Button>
                   </div>
@@ -88,7 +131,12 @@ const UserInfo: React.FC = () => {
                   PHOTO
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  データ
+                  <Avatar
+                    className={classes.avatar}
+                    variant='square'
+                    alt='photo'
+                    src={user.photoUrl}
+                  />
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -101,7 +149,7 @@ const UserInfo: React.FC = () => {
                   NAME
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  Xanthe Neal
+                  {user.displayName}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -114,7 +162,7 @@ const UserInfo: React.FC = () => {
                   BIO
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  I am a software developer and a big fan of devchallenges...{' '}
+                  {bio}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -127,7 +175,7 @@ const UserInfo: React.FC = () => {
                   PHONE
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  12345678901
+                  {user.phoneNumber}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -140,7 +188,7 @@ const UserInfo: React.FC = () => {
                   EMAIL
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  xanthe.neal@example.com
+                  {user.email}
                 </TableCell>
               </TableRow>
               <TableRow>
