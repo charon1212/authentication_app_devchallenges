@@ -161,6 +161,7 @@ const SignUp: React.FC = () => {
               className={classes.text}
               placeholder='Password'
               value={password}
+              type='password'
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
                 setPassword(e.target.value);
