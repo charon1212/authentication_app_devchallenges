@@ -23,6 +23,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { auth } from '../app/firebase/firebase';
 import { login } from '../features/user/userSlice';
+import Signature from './Signature';
 
 const useStyles = makeStyles((theme) => ({
   /** レスポンシブ対応。 */
@@ -221,6 +222,7 @@ const SignUp: React.FC = () => {
             </Link>
           </Typography>
         </Paper>
+        <Signature />
       </Container>
     </>
   );

@@ -12,11 +12,12 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import Header from './Header';
+import Signature from './Signature';
 
 const useStyles = makeStyles((theme) => ({
   backLink: {},
   paper: {
-    margin: theme.spacing(2, 0, 10),
+    margin: theme.spacing(2, 0, 0),
     padding: theme.spacing(2, 4, 2),
   },
   avatar: {
@@ -88,6 +89,7 @@ const UserInfoEdit: React.FC = () => {
             </Button>
           </Container>
         </Paper>
+        <Signature />
       </Container>
     </>
   );

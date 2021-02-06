@@ -14,6 +14,7 @@ import {
   Button,
 } from '@material-ui/core';
 import clsx from 'clsx';
+import Signature from './Signature';
 
 const useStyles = makeStyles((theme) => ({
   mainTitle: {
@@ -158,14 +159,7 @@ const UserInfo: React.FC = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <div style={{
-          display:'flex',
-          justifyContent: 'space-between',
-          color: 'lightgray'
-        }}>
-          <div>charon1212</div>
-          <div>devchallenges.io</div>
-        </div>
+        <Signature />
       </Container>
     </>
   );
