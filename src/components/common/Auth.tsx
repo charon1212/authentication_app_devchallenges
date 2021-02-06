@@ -4,6 +4,7 @@ import { selectUser, login, logout } from '../..//features/user/userSlice';
 import { Redirect } from 'react-router-dom';
 import { auth } from '../../app/firebase/firebase';
 import { pathLogin } from './AppRouter';
+import { noname, noImageUrl } from '../../app/constant';
 
 type Prop = {
   loginUri: string;
@@ -24,8 +25,8 @@ const Auth: React.FC<Prop> = (props) => {
         dispatch(
           login({
             uid: authUser.uid,
-            displayName: authUser.displayName || '',
-            photoUrl: authUser.photoURL || '',
+            displayName: authUser.displayName || noname,
+            photoUrl: authUser.photoURL || noImageUrl,
           })
         );
         setIsLogin(true);
