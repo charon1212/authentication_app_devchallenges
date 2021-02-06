@@ -9,11 +9,14 @@ import {
   withStyles,
   Typography,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import { MenuProps } from '@material-ui/core/Menu';
 import devchallenges from '../resource/devchallenges.svg';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HeaderMenuItems from './HeaderMenuItems';
+import { selectUser } from '../features/user/userSlice';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -56,6 +59,9 @@ const StyledMenu = withStyles((theme) => ({
 
 const Header: React.FC = () => {
   const classes = useStyles();
+  const user = useSelector(selectUser);
+  const history = useHistory();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -66,20 +72,31 @@ const Header: React.FC = () => {
     setAnchorEl(e.currentTarget);
   };
 
+  const topIconOnClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    history.push('/');
+  };
+
   return (
     <>
       <AppBar color='inherit'>
         <Toolbar className={classes.toolbar}>
-          <img src={devchallenges} alt='devchallenges' />
+          <Link href='#' onClick={topIconOnClick}>
+            <img src={devchallenges} alt='devchallenges' />
+          </Link>
           <Link className={classes.link} href='#' onClick={linkClickHandler}>
             <div>
               <Avatar
                 className={classes.avatar}
                 variant='square'
-                src='https://www.pakutaso.com/shared/img/thumb/00_PP04_PP_TP_V.jpg'
+                src={user.photoUrl}
               />
             </div>
-            <Typography className={classes.userName}>テスト名</Typography>
+            <Typography className={classes.userName}>
+              {user.displayName}
+            </Typography>
             {open ? (
               <ArrowDropUpIcon className={classes.menuArrowIcon} />
             ) : (
