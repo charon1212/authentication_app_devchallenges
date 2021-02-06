@@ -4,7 +4,7 @@ import { selectUser, login, logout } from '../..//features/user/userSlice';
 import { Redirect } from 'react-router-dom';
 import { auth } from '../../app/firebase/firebase';
 import { pathLogin } from './AppRouter';
-import { noname, noImageUrl } from '../../app/constant';
+import { noname, noImageUrl, noEMail, noPhoneNumber } from '../../app/constant';
 
 type Prop = {
   loginUri: string;
@@ -24,9 +24,11 @@ const Auth: React.FC<Prop> = (props) => {
         // ログインしている
         dispatch(
           login({
-            uid: authUser.uid,
-            displayName: authUser.displayName || noname,
-            photoUrl: authUser.photoURL || noImageUrl,
+            uid: user.uid,
+            displayName: user.displayName || noname,
+            photoUrl: user.photoUrl || noImageUrl,
+            email: user.email || noEMail,
+            phoneNumber: user.phoneNumber || noPhoneNumber,
           })
         );
         setIsLogin(true);

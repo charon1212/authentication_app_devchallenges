@@ -24,7 +24,7 @@ import { auth } from '../app/firebase/firebase';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user/userSlice';
 import Signature from './Signature';
-import { noname, noImageUrl } from '../app/constant';
+import { noname, noImageUrl, noEMail, noPhoneNumber } from '../app/constant';
 import { pathSignUp } from './common/AppRouter';
 
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +89,8 @@ const Login: React.FC = () => {
               uid: user.uid,
               displayName: user.displayName || noname,
               photoUrl: user.photoURL || noImageUrl,
+              email: user.email || noEMail,
+              phoneNumber: user.phoneNumber || noPhoneNumber,
             })
           );
           history.push('/');
