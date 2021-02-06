@@ -1,0 +1,2 @@
+export const noname = 'noname';
+export const noImageUrl = 'https://firebasestorage.googleapis.com/v0/b/authenticationapp-dc.appspot.com/o/noimage.jpg?alt=media&token=a6aa429c-ab44-4a1f-ab13-72e8dd034886';

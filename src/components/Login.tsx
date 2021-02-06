@@ -24,6 +24,7 @@ import { auth } from '../app/firebase/firebase';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user/userSlice';
 import Signature from './Signature';
+import { noname, noImageUrl } from '../app/constant';
 
 const useStyles = makeStyles((theme) => ({
   /** レスポンシブ対応。 */
@@ -85,8 +86,8 @@ const Login: React.FC = () => {
           dispatch(
             login({
               uid: user.uid,
-              displayName: user.displayName ?? '',
-              photoUrl: user.photoURL ?? '',
+              displayName: user.displayName || noname,
+              photoUrl: user.photoURL || noImageUrl,
             })
           );
           history.push('/');
