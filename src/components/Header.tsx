@@ -17,6 +17,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HeaderMenuItems from './HeaderMenuItems';
 import { selectUser } from '../features/user/userSlice';
 import { useHistory } from 'react-router-dom';
+import { noImageUrl, noname } from '../app/constant';
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -91,11 +92,11 @@ const Header: React.FC = () => {
               <Avatar
                 className={classes.avatar}
                 variant='square'
-                src={user.photoUrl}
+                src={user.photoUrl || noImageUrl}
               />
             </div>
             <Typography className={classes.userName}>
-              {user.displayName}
+              {user.displayName || noname}
             </Typography>
             {open ? (
               <ArrowDropUpIcon className={classes.menuArrowIcon} />

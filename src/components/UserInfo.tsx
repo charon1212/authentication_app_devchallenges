@@ -21,6 +21,7 @@ import { selectUser } from '../features/user/userSlice';
 import { pathUserInfoEdit } from './common/AppRouter';
 import { useHistory } from 'react-router-dom';
 import { db } from '../app/firebase/firebase';
+import { noEMail, noImageUrl, noname, noPhoneNumber } from '../app/constant';
 
 const useStyles = makeStyles((theme) => ({
   mainTitle: {
@@ -135,7 +136,7 @@ const UserInfo: React.FC = () => {
                     className={classes.avatar}
                     variant='square'
                     alt='photo'
-                    src={user.photoUrl}
+                    src={user.photoUrl || noImageUrl}
                   />
                 </TableCell>
               </TableRow>
@@ -149,7 +150,7 @@ const UserInfo: React.FC = () => {
                   NAME
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  {user.displayName}
+                  {user.displayName || noname}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -175,7 +176,7 @@ const UserInfo: React.FC = () => {
                   PHONE
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  {user.phoneNumber}
+                  {user.phoneNumber || noPhoneNumber}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -188,7 +189,7 @@ const UserInfo: React.FC = () => {
                   EMAIL
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  {user.email}
+                  {user.email || noEMail}
                 </TableCell>
               </TableRow>
               <TableRow>

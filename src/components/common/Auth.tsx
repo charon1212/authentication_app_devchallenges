@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { login, logout } from '../..//features/user/userSlice';
 import { Redirect } from 'react-router-dom';
 import { auth } from '../../app/firebase/firebase';
-import { noname, noImageUrl, noEMail, noPhoneNumber } from '../../app/constant';
 
 type Prop = {
   loginUri: string;
@@ -40,10 +39,10 @@ const Auth: React.FC<Prop> = (props) => {
         dispatch(
           login({
             uid: authUser.uid,
-            displayName: authUser.displayName || noname,
-            photoUrl: authUser.photoURL || noImageUrl,
-            email: authUser.email || noEMail,
-            phoneNumber: authUser.phoneNumber || noPhoneNumber,
+            displayName: authUser.displayName || '',
+            photoUrl: authUser.photoURL || '',
+            email: authUser.email || '',
+            phoneNumber: authUser.phoneNumber || '',
           })
         );
         setIsLogin(true);
