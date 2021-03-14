@@ -21,10 +21,7 @@ import imageTwitter from '../resource/Twitter.svg';
 import ImageButton from './ImageButton';
 import { useHistory } from 'react-router-dom';
 import { auth } from '../app/firebase/firebase';
-import { useDispatch } from 'react-redux';
-import { login } from '../features/user/userSlice';
 import Signature from './Signature';
-import { noname, noImageUrl, noEMail, noPhoneNumber } from '../app/constant';
 import { pathSignUp } from './common/AppRouter';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
 const Login: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
@@ -93,15 +89,6 @@ const Login: React.FC = () => {
       .then((credential) => {
         const user = credential.user;
         if (user) {
-          dispatch(
-            login({
-              uid: user.uid,
-              displayName: user.displayName || noname,
-              photoUrl: user.photoURL || noImageUrl,
-              email: user.email || noEMail,
-              phoneNumber: user.phoneNumber || noPhoneNumber,
-            })
-          );
           history.push('/');
         } else {
           alert('ログインに失敗しました。');

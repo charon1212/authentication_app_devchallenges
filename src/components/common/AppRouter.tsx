@@ -14,7 +14,7 @@ const AppRouter: React.FC = () => {
         <Switch>
           <Route exact path={pathLogin} component={Login} />
           <Route exact path={pathSignUp} component={SignUp} />
-          <Auth loginUri='' loadingComponent={LoginLoading}>
+          <Auth loginUri={pathLogin} loadingComponent={LoginLoading}>
             <Switch>
               <Route exact path={pathUserInfoEdit} component={UserInfoEdit} />
               <Route component={UserInfo} />

@@ -20,11 +20,8 @@ import imageGoogle from '../resource/Google.svg';
 import imageTwitter from '../resource/Twitter.svg';
 import ImageButton from './ImageButton';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { auth } from '../app/firebase/firebase';
-import { login } from '../features/user/userSlice';
 import Signature from './Signature';
-import { noname, noImageUrl, noEMail, noPhoneNumber } from '../app/constant';
 import { pathLogin } from './common/AppRouter';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,8 +63,6 @@ const useStyles = makeStyles((theme) => ({
 const SignUp: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
-
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -96,15 +91,6 @@ const SignUp: React.FC = () => {
       .then((credential) => {
         const user = credential.user;
         if (user) {
-          dispatch(
-            login({
-              uid: user.uid,
-              displayName: user.displayName || noname,
-              photoUrl: user.photoURL || noImageUrl,
-              email: user.email || noEMail,
-              phoneNumber: user.phoneNumber || noPhoneNumber,
-            })
-          );
           alert(
             'ようこそ！サインアップに成功しました。\nホーム画面に移動します。'
           );
