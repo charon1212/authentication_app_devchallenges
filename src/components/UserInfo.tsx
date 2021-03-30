@@ -20,8 +20,8 @@ import Signature from './Signature';
 import { selectUser } from '../features/user/userSlice';
 import { pathUserInfoEdit } from './common/AppRouter';
 import { useHistory } from 'react-router-dom';
-import { db } from '../app/firebase/firebase';
 import { noEMail, noImageUrl, noname, noPhoneNumber } from '../app/constant';
+import { getUserInfo } from '../app/firebase/user';
 
 const useStyles = makeStyles((theme) => ({
   mainTitle: {
@@ -56,7 +56,11 @@ const UserInfo: React.FC = () => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const history = useHistory();
+  const [name, setName] = useState('');
+  const [photoUrl, setPhotoUrl] = useState('');
   const [bio, setBio] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
 
   const editButtonOnClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -66,14 +70,14 @@ const UserInfo: React.FC = () => {
   };
 
   useEffect(() => {
-    const userDoc = db.collection('users').doc(user.uid);
-    const unSub = userDoc.onSnapshot(
-      (snapshot) => {
-        if (snapshot.exists) {
-          setBio(snapshot.get('bio'));
-        } else {
-          setBio('');
-        }
+    const unSub = getUserInfo(
+      user,
+      (userInfo) => {
+        setPhotoUrl(userInfo.photoUrl || noImageUrl);
+        setName(userInfo.displayName || noname);
+        setBio(userInfo.bio || '');
+        setPhone(userInfo.phoneNumber || noPhoneNumber);
+        setEmail(userInfo.email || noEMail);
       },
       (error) => {
         alert('ユーザー情報の取得に失敗しました。');
@@ -136,7 +140,7 @@ const UserInfo: React.FC = () => {
                     className={classes.avatar}
                     variant='square'
                     alt='photo'
-                    src={user.photoUrl || noImageUrl}
+                    src={photoUrl}
                   />
                 </TableCell>
               </TableRow>
@@ -150,7 +154,7 @@ const UserInfo: React.FC = () => {
                   NAME
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  {user.displayName || noname}
+                  {name}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -176,7 +180,7 @@ const UserInfo: React.FC = () => {
                   PHONE
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  {user.phoneNumber || noPhoneNumber}
+                  {phone}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -189,7 +193,7 @@ const UserInfo: React.FC = () => {
                   EMAIL
                 </TableCell>
                 <TableCell className={classes.tableCellPadding}>
-                  {user.email || noEMail}
+                  {email}
                 </TableCell>
               </TableRow>
               <TableRow>

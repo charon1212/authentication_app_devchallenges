@@ -42,7 +42,6 @@ const Auth: React.FC<Prop> = (props) => {
             displayName: authUser.displayName || '',
             photoUrl: authUser.photoURL || '',
             email: authUser.email || '',
-            phoneNumber: authUser.phoneNumber || '',
           })
         );
         setIsLogin(true);

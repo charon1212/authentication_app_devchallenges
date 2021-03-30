@@ -5,11 +5,10 @@ export type User = {
   uid: string,
   photoUrl: string,
   displayName: string,
-  phoneNumber: string,
   email: string,
 };
 
-const initialState: User = { uid: '', photoUrl: '', displayName: '', phoneNumber: '', email: '', };
+const initialState: User = { uid: '', photoUrl: '', displayName: '', email: '', };
 
 export const userSlice = createSlice({
   name: 'user',
