@@ -26,6 +26,7 @@ const AppRouter: React.FC = () => {
   );
 };
 
+export const pathTop = '/';
 export const pathLogin = '/login';
 export const pathSignUp = '/signup';
 export const pathUserInfoEdit = '/edit';

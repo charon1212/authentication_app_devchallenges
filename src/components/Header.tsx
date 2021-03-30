@@ -18,6 +18,7 @@ import HeaderMenuItems from './HeaderMenuItems';
 import { selectUser } from '../features/user/userSlice';
 import { useHistory } from 'react-router-dom';
 import { noImageUrl, noname } from '../app/constant';
+import { pathTop } from './common/AppRouter';
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -77,7 +78,7 @@ const Header: React.FC = () => {
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     e.preventDefault();
-    history.push('/');
+    history.push(pathTop);
   };
 
   return (
