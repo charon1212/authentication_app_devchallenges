@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Container,
   Link,
@@ -7,11 +6,19 @@ import {
   Typography,
   makeStyles,
   useTheme,
-  TextField,
-  FormControl,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { noEMail, noImageUrl, noname, noPhoneNumber } from '../app/constant';
+import { auth } from '../app/firebase/firebase';
+import uploadFile from '../app/firebase/uploadFile';
+import { getUserInfo, updateUserInfo } from '../app/firebase/user';
+import { selectUser, update } from '../features/user/userSlice';
+import AvatarEdit from './AvatarEdit';
+import { pathTop } from './common/AppRouter';
 import Header from './Header';
+import InputArea from './InputArea';
 import Signature from './Signature';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,14 +26,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(2, 0, 0),
     padding: theme.spacing(2, 4, 2),
-  },
-  avatar: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-  },
-  changePhotoButton: {
-    marginLeft: theme.spacing(2),
-    color: 'gray',
   },
   innerContainer: {
     marginLeft: theme.spacing(0),
@@ -40,6 +39,79 @@ const useStyles = makeStyles((theme) => ({
 const UserInfoEdit: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  const [avatarImage, setAvatarImage] = useState<File | null>(null);
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const unSub = getUserInfo(
+      user,
+      (userInfo) => {
+        setName(userInfo.displayName || noname);
+        setBio(userInfo.bio || '');
+        setPhone(userInfo.phoneNumber || noPhoneNumber);
+        setEmail(userInfo.email || noEMail);
+      },
+      (error) => {
+        alert('ユーザー情報の取得に失敗しました。');
+      }
+    );
+
+    return () => {
+      unSub();
+    };
+  }, [user]);
+
+  /** ■■■■保存処理■■■■ */
+  const validate = () => {
+    return true;
+  };
+
+  const save = (photoUrl?: string) => {
+    const promise = updateUserInfo(user.uid, {
+      photoUrl: photoUrl,
+      displayName: name,
+      bio: bio,
+      phoneNumber: phone,
+      email: email,
+      password: password,
+    });
+    if(!promise){
+      alert('認証情報の取得に失敗しました。');
+      auth.signOut();
+      return;
+    }
+    promise.then(() => {
+      dispatch(update({
+        displayName: name,
+        photoUrl: photoUrl,
+        email: email
+      }));
+      history.push(pathTop);
+    });
+  };
+
+  const saveButtonClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!validate()) return;
+
+    if (avatarImage) {
+      uploadFile(avatarImage, user.uid).then(async (snapshot) => {
+        const url = await snapshot.ref.getDownloadURL();
+        save(url);
+      }).catch((error) => {
+        alert('画像ファイルのアップロードに失敗しました。')
+      });
+    } else {
+      save();
+    }
+  };
 
   return (
     <>
@@ -60,30 +132,49 @@ const UserInfoEdit: React.FC = () => {
                 margin: theme.spacing(2, 0, 2),
               }}
             >
-              <Avatar
-                className={classes.avatar}
-                variant='square'
-                src='https://www.pakutaso.com/shared/img/thumb/00_PP04_PP_TP_V.jpg'
+              <AvatarEdit
+                setter={setAvatarImage}
+                initialImageUrl={user.photoUrl || noImageUrl}
               />
-              <Button className={classes.changePhotoButton} component='label'>
-                CHANGE PHOTO
-                <input type='file' hidden />
-              </Button>
             </div>
-            <InputArea label='Name' placeholder='Enter your name...' />
+            <InputArea
+              label='Name'
+              value={name}
+              setter={setName}
+              placeholder='Enter your name...'
+            />
             <InputArea
               label='Bio'
+              value={bio}
+              setter={setBio}
               placeholder='Enter your bio...'
               multiline
               rows={3}
             />
-            <InputArea label='Phone' placeholder='Enter your phone...' />
-            <InputArea label='Email' placeholder='Enter your email...' />
-            <InputArea label='Password' placeholder='Enter your password...' />
+            <InputArea
+              label='Phone'
+              value={phone}
+              setter={setPhone}
+              placeholder='Enter your phone...'
+            />
+            <InputArea
+              label='Email'
+              value={email}
+              setter={setEmail}
+              placeholder='Enter your email...'
+            />
+            <InputArea
+              label='Password'
+              value={password}
+              setter={setPassword}
+              placeholder='Enter your password...'
+              type='password'
+            />
             <Button
               className={classes.saveButton}
               variant='contained'
               color='primary'
+              onClick={saveButtonClicked}
             >
               Save
             </Button>
@@ -91,36 +182,6 @@ const UserInfoEdit: React.FC = () => {
         </Paper>
         <Signature />
       </Container>
-    </>
-  );
-};
-
-type inputAreaProp = {
-  label: string;
-  placeholder: string;
-  multiline?: boolean;
-  rows?: number;
-};
-const InputArea: React.FC<inputAreaProp> = (props: inputAreaProp) => {
-  const theme = useTheme();
-
-  return (
-    <>
-      <div
-        style={{
-          margin: theme.spacing(0, 0, 3),
-        }}
-      >
-        <Typography>{props.label}</Typography>
-        <FormControl fullWidth>
-          <TextField
-            variant='outlined'
-            placeholder={props.placeholder}
-            multiline={props.multiline}
-            rows={props.rows}
-          />
-        </FormControl>
-      </div>
     </>
   );
 };

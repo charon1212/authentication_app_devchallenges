@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-type User = {
+export type User = {
   uid: string,
   photoUrl: string,
   displayName: string,
@@ -23,10 +23,15 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.user = initialState;
     },
+    update: (state, action: PayloadAction<{displayName?: string, photoUrl?: string, email?: string}>) => {
+      if(action.payload.displayName !== undefined) state.user.displayName = action.payload.displayName;
+      if(action.payload.photoUrl !== undefined) state.user.photoUrl = action.payload.photoUrl;
+      if(action.payload.email !== undefined) state.user.email = action.payload.email;
+    }
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, update } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;
 
