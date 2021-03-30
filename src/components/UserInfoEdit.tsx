@@ -113,11 +113,16 @@ const UserInfoEdit: React.FC = () => {
     }
   };
 
+  const backButtonClicked = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    history.push(pathTop);
+  }
+
   return (
     <>
       <Header />
       <Container maxWidth='md'>
-        <Link className={classes.backLink} href='#'>
+        <Link className={classes.backLink} href='#' onClick={backButtonClicked}>
           <Typography variant='h6'>{'<  '}Back</Typography>
         </Link>
         <Paper className={classes.paper}>
