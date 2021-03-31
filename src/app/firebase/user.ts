@@ -69,10 +69,9 @@ export const updateUserInfo = (uid: string, userInfo: UserInfo) => {
     [fieldBio]: userInfo.bio,
     [fieldPhoneNumber]: userInfo.phoneNumber
   }
-
   const promiseSet: Promise<any>[] = [
     auth.currentUser.updateProfile(newProfile),
-    userDoc.update(newUserDoc)
+    userDoc.set(newUserDoc)
   ];
   userInfo.email && promiseSet.push(auth.currentUser.updateEmail(userInfo.email));
   userInfo.password && promiseSet.push(auth.currentUser.updatePassword(userInfo.password));
