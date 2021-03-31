@@ -20,7 +20,7 @@ import imageGoogle from '../resource/Google.svg';
 import imageTwitter from '../resource/Twitter.svg';
 import ImageButton from './ImageButton';
 import { useHistory } from 'react-router-dom';
-import { auth } from '../app/firebase/firebase';
+import { auth, googleAuthProvider } from '../app/firebase/firebase';
 import Signature from './Signature';
 import { pathSignUp } from './common/AppRouter';
 
@@ -75,17 +75,15 @@ const Login: React.FC = () => {
   ) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      loginButtonOnClick(undefined);
+      loginButtonOnClick();
     }
   };
 
-  /** ログインボタンクリック時の処理。 */
-  const loginButtonOnClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
+  /** 認証後の後処理 */
+  const afterAuthentication = (
+    promise: Promise<firebase.default.auth.UserCredential>
   ) => {
-    e?.preventDefault();
-    auth
-      .signInWithEmailAndPassword(mail, password)
+    promise
       .then((credential) => {
         const user = credential.user;
         if (user) {
@@ -96,9 +94,21 @@ const Login: React.FC = () => {
       })
       .catch((error) => {
         const { code, message } = error;
-        console.log(code); // 製品としては不要だが、学習用のサンプルとしてエラーコードが取れることを残す。使わないとターミナルに警告が出る。
+        console.log(code); // 製品としては不要だが、学習用のサンプルとしてエラーコードが取れることを残す。
         alert(message);
       });
+  };
+
+  /** ログインボタンクリック時の処理。 */
+  const loginButtonOnClick = () => {
+    const promise = auth.signInWithEmailAndPassword(mail, password);
+    afterAuthentication(promise);
+  };
+
+  /** Googleボタンクリック時の処理 */
+  const loginGoogleButtonOnClick = () => {
+    const promise = auth.signInWithPopup(googleAuthProvider);
+    afterAuthentication(promise);
   };
 
   return (
@@ -169,7 +179,7 @@ const Login: React.FC = () => {
                 src={imageFacebook}
                 alt='Facebook'
                 onClick={() => {
-                  console.log('clicked');
+                  alert('ごめんなさい、Google以外未実装です。。。');
                 }}
               />
             </Grid>
@@ -178,7 +188,7 @@ const Login: React.FC = () => {
                 src={imageGithub}
                 alt='Github'
                 onClick={() => {
-                  console.log('clicked');
+                  alert('ごめんなさい、Google以外未実装です。。。');
                 }}
               />
             </Grid>
@@ -187,7 +197,7 @@ const Login: React.FC = () => {
                 src={imageGoogle}
                 alt='Google'
                 onClick={() => {
-                  console.log('clicked');
+                  loginGoogleButtonOnClick();
                 }}
               />
             </Grid>
@@ -196,7 +206,7 @@ const Login: React.FC = () => {
                 src={imageTwitter}
                 alt='Twitter'
                 onClick={() => {
-                  console.log('clicked');
+                  alert('ごめんなさい、Google以外未実装です。。。');
                 }}
               />
             </Grid>

@@ -8,17 +8,11 @@ import {
   FormControl,
   OutlinedInput,
   Button,
-  Grid,
   Link,
 } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
 import devchallenges from '../resource/devchallenges.svg';
-import imageFacebook from '../resource/Facebook.svg';
-import imageGithub from '../resource/Github.svg';
-import imageGoogle from '../resource/Google.svg';
-import imageTwitter from '../resource/Twitter.svg';
-import ImageButton from './ImageButton';
 import { useHistory } from 'react-router-dom';
 import { auth } from '../app/firebase/firebase';
 import Signature from './Signature';
@@ -77,17 +71,15 @@ const SignUp: React.FC = () => {
   ) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      signUp(undefined);
+      signUp();
     }
   };
 
-  /** サインアップボタンクリック時の処理。 */
-  const signUp = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
+  /** サインアップ後の処理 */
+  const afterSignUp = (
+    promise: Promise<firebase.default.auth.UserCredential>
   ) => {
-    e?.preventDefault();
-    auth
-      .createUserWithEmailAndPassword(mail, password)
+    promise
       .then((credential) => {
         const user = credential.user;
         if (user) {
@@ -105,6 +97,12 @@ const SignUp: React.FC = () => {
         console.log(errorCode);
         alert(errorMessage);
       });
+  };
+
+  /** サインアップボタンクリック時の処理。 */
+  const signUp = () => {
+    const promise = auth.createUserWithEmailAndPassword(mail, password);
+    afterSignUp(promise);
   };
 
   return (
@@ -174,50 +172,6 @@ const SignUp: React.FC = () => {
           <Typography className={classes.labelCenter}>
             or continue with these social profile
           </Typography>
-          {/** ■■■SNS認証■■■ */}
-          <Grid
-            className={classes.gridContainer}
-            container
-            spacing={2}
-            justify='center'
-          >
-            <Grid item>
-              <ImageButton
-                src={imageFacebook}
-                alt='Facebook'
-                onClick={() => {
-                  console.log('clicked');
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <ImageButton
-                src={imageGithub}
-                alt='Github'
-                onClick={() => {
-                  console.log('clicked');
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <ImageButton
-                src={imageGoogle}
-                alt='Google'
-                onClick={() => {
-                  console.log('clicked');
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <ImageButton
-                src={imageTwitter}
-                alt='Twitter'
-                onClick={() => {
-                  console.log('clicked');
-                }}
-              />
-            </Grid>
-          </Grid>
           <Typography className={classes.labelCenter}>
             Already a member?{' '}
             <Link href='#' onClick={switchLogin}>
