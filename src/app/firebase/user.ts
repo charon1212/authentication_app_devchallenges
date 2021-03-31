@@ -55,9 +55,6 @@ export const getUserInfo = (user: User, handler: (userInfo:UserInfo) => void, er
  */
 export const updateUserInfo = (uid: string, userInfo: UserInfo) => {
 
-  console.log(userInfo);
-  console.log(auth.currentUser);
-
   if(!auth.currentUser) return;
 
   const userDoc = db.collection('users').doc(uid);
