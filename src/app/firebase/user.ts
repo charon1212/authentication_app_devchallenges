@@ -28,16 +28,16 @@ export const getUserInfo = (user: User, handler: (userInfo:UserInfo) => void, er
   const userDoc = db.collection('users').doc(user.uid);
   const unSub = userDoc.onSnapshot(
     (snapshot) => {
-      if (snapshot.exists) {
-        const userInfo:UserInfo = {
-          photoUrl: user.photoUrl,
-          displayName: user.displayName,
-          bio: snapshot.get(fieldBio),
-          phoneNumber: snapshot.get(fieldPhoneNumber),
-          email: user.email
-        }
-        handler(userInfo);
+      let userInfo: UserInfo = {
+        photoUrl: user.photoUrl,
+        displayName: user.displayName,
+        email: user.email
       }
+      if (snapshot.exists) {
+        userInfo.bio = snapshot.get(fieldBio);
+        userInfo.phoneNumber = snapshot.get(fieldPhoneNumber);
+      }
+      handler(userInfo);
     },
     (error) => errorHandler(error)
   );
