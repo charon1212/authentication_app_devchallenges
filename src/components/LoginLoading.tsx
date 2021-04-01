@@ -1,7 +1,12 @@
+import { LinearProgress } from '@material-ui/core';
 import React from 'react';
 
-const LoginLoading:React.FC = () => {
-  return <div>後で作る予定。ロード中</div>;
+const LoginLoading: React.FC = () => {
+  return (
+    <>
+      <LinearProgress />
+    </>
+  );
 };
 
 export default LoginLoading;
