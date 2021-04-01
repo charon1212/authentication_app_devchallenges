@@ -7,6 +7,9 @@ import LoginLoading from '../LoginLoading';
 import UserInfoEdit from '../UserInfoEdit';
 import UserInfo from '../UserInfo';
 
+/**
+ * リソースURIと画面のマッピングを管理するルーター。
+ */
 const AppRouter: React.FC = () => {
   return (
     <>

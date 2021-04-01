@@ -17,6 +17,13 @@ type Props = {
   onClick?: (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
 };
 
+/**
+ * 画像をボタンっぽくする部品
+ *
+ * @param props.src 画像のURL
+ * @param props.alt inputタグのalt属性
+ * @param props.onClick ボタン押下時の処理
+ */
 const ImageButton: React.FC<Props> = (props) => {
   const classes = useStyles();
   return (

@@ -17,6 +17,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * Avatar画像編集部品。
+ * ファイルアップロード用のボタン(input type='file')と、プレビュー表示用のAvatarタグのセット。
+ *
+ * @param props.initialImageUrl 最初にプレビュー表示用のAvatarタグに表示する画像のsrc属性。
+ * @param props.setter ファイルアップロード時に呼び出す関数。
+ * @returns 
+ */
 const AvatarEdit: React.FC<Props> = (props) => {
   const classes = useStyles();
 
