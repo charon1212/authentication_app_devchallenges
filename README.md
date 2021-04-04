@@ -1,44 +1,100 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+<!-- Please update value in the {}  -->
 
-## Available Scripts
+<h1 align="center">Authentication App</h1>
 
-In the project directory, you can run:
+<div align="center">
+   Solution for a challenge from  <a href="http://devchallenges.io" target="_blank">Devchallenges.io</a>.
+</div>
 
-### `yarn start`
+<div align="center">
+  <h3>
+    <a href="https://authenticationapp-dc.web.app/">
+      Demo
+    </a>
+    <span> | </span>
+    <a href="https://devchallenges.io/solutions/5gB2BgAFjuraqVONVQuL">
+      Solution
+    </a>
+    <span> | </span>
+    <a href="https://devchallenges.io/challenges/N1fvBjQfhlkctmwj1tnw">
+      Challenge
+    </a>
+  </h3>
+</div>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<!-- TABLE OF CONTENTS -->
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Table of Contents
 
-### `yarn test`
+- [Overview](#overview)
+  - [Built With](#built-with)
+- [Features](#features)
+- [How to use](#how-to-use)
+- [Acknowledgements](#acknowledgements)
+- [Contact](#contact)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<!-- OVERVIEW -->
 
-### `yarn build`
+## Overview
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![screenshot](docs/img/userinfo.png)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+You can see demo to access <https://authenticationapp-dc.web.app>. For more information, see [this article]() (written in Japanese).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Built With
 
-### `yarn eject`
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org)
+- [Firebase](https://firebase.google.com)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Features
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This application/site was created as a submission to a [DevChallenges](https://devchallenges.io/challenges) challenge. The [challenge](https://devchallenges.io/challenges/N1fvBjQfhlkctmwj1tnw) was to build an application to complete the given user storie.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## How To Use
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### run app
 
-## Learn More
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+# Clone this repository
+$ git clone https://github.com/charon1212/authentication_app_devchallenges.git
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Install dependencies
+$ npm install
+
+# Run the app
+$ npm run start
+```
+
+### connect backend
+
+In order to connect backend, you should ...
+
+1. make firebase project.
+1. make .env file in your project root directory.  
+[/src/app/firebase/firebase.ts](https://github.com/charon1212/ImageUploader_devchallenges/blob/main/src/app/firebase/firebase.ts) include firebase settings.  
+(See .env.example and <https://firebase.google.com/docs/web/setup#add-sdks-initialize>)
+1. set firebase storage's security rule like below:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}{
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+
+## Acknowledgements
+
+- Sample avatar used in screenshot is [Designed by studiogstock / Freepik](http://www.freepik.com)
+
+## Contact
+
+- Mail <charon1212.teq@gmail.com>
+- GitHub [@charon1212](https://github.com/charon1212)
+- Twitter [@charon91179134](https://twitter.com/charon91179134)
