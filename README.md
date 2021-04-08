@@ -39,7 +39,7 @@
 
 ![screenshot](docs/img/userinfo.png)
 
-You can see demo to access <https://authenticationapp-dc.web.app>. For more information, see [this article]() (written in Japanese).
+You can see demo to access <https://authenticationapp-dc.web.app>. For more information, see [this article](https://qiita.com/charon1212/items/111d6185574020214742) (written in Japanese).
 
 ### Built With
 
